@@ -1,4 +1,3 @@
-
 import os
 import tempfile
 
@@ -66,6 +65,9 @@ if "chat_history" not in st.session_state:
 if "image_path" not in st.session_state:
     st.session_state.image_path = None
 
+if "current_results" not in st.session_state:
+    st.session_state.current_results = []
+
 
 if uploaded_file is not None:
 
@@ -107,6 +109,7 @@ if uploaded_file is not None:
 
             st.session_state.prediction = result
             st.session_state.chat_history = []
+            st.session_state.current_results = []
 
         except Exception as e:
 
@@ -239,21 +242,18 @@ Question:
 {question}
 """
 
-
         try:
-
             results = retrieve(
                 rag_query,
                 top_k=8
             )
-
+            st.session_state.current_results = results
         except Exception as e:
-
             st.error(
                 f"Evidence retrieval failed: {e}"
             )
-
             results = []
+            st.session_state.current_results = []
 
 
         if not results:
@@ -322,115 +322,84 @@ Question:
                 "content": answer
             }
         )
+        
+        st.rerun()
 
 
-        ```python
-if results:
+    if st.session_state.current_results:
 
-    with st.expander(
-        "📚 Retrieved Agricultural Evidence"
-    ):
-
-        for i, result in enumerate(
-            results,
-            start=1
+        with st.expander(
+            "📚 Retrieved Agricultural Evidence"
         ):
 
-            metadata = result.get(
-                "document",
-                {}
-            ).get(
-                "metadata",
-                {}
-            )
+            for i, result in enumerate(
+                st.session_state.current_results,
+                start=1
+            ):
 
-            st.markdown(
-                f"### Evidence {i}"
-            )
-
-            st.write(
-                f"**Retrieval score:** "
-                f"{float(result.get('score', 0)):.4f}"
-            )
-
-            st.write(
-                f"**Crop:** "
-                f"{metadata.get('crop', 'Unknown')}"
-            )
-
-            st.write(
-                f"**Disease:** "
-                f"{metadata.get('disease', 'Unknown')}"
-            )
-
-            st.write(
-                f"**Topic:** "
-                f"{metadata.get('topic', 'Unknown')}"
-            )
-
-            st.write(
-                f"**Source:** "
-                f"{metadata.get('source_title', 'Unknown')}"
-            )
-
-            st.write(
-                f"**Organization/Author:** "
-                f"{metadata.get('source_organization', 'Unknown')}"
-            )
-
-            st.write(
-                f"**Publication year:** "
-                f"{metadata.get('publication_year', 'Unknown')}"
-            )
-
-            st.write(
-                f"**Source type:** "
-                f"{metadata.get('source_type', 'Unknown')}"
-            )
-
-            st.write(
-                f"**Region:** "
-                f"{metadata.get('region', 'Unknown')}"
-            )
-
-            st.write(
-                f"**Evidence type:** "
-                f"{metadata.get('evidence_type', 'Unknown')}"
-            )
-
-            st.write(
-                f"**Confidence:** "
-                f"{metadata.get('confidence', 'Unknown')}"
-            )
-
-            st.markdown(
-                "**Information:**"
-            )
-
-            st.write(
-                metadata.get(
-                    "content",
-                    "No information available."
+                metadata = result.get(
+                    "document",
+                    {}
+                ).get(
+                    "metadata",
+                    {}
                 )
-            )
-
-            source_url = metadata.get(
-                "source_url"
-            )
-
-            if source_url:
 
                 st.markdown(
-                    f"**Source URL:** [{source_url}]({source_url})"
+                    f"### Evidence {i}"
                 )
 
-            st.divider()
-```
+                st.write(
+                    f"**Retrieval score:** "
+                    f"{float(result.get('score', 0)):.4f}"
+                )
 
+                st.write(
+                    f"**Crop:** "
+                    f"{metadata.get('crop', 'Unknown')}"
+                )
 
-else:
+                st.write(
+                    f"**Disease:** "
+                    f"{metadata.get('disease', 'Unknown')}"
+                )
 
-    st.info(
-        "Select a crop and upload a wheat or maize leaf image "
-        "to begin."
-    )
+                st.write(
+                    f"**Topic:** "
+                    f"{metadata.get('topic', 'Unknown')}"
+                )
+
+                st.write(
+                    f"**Source:** "
+                    f"{metadata.get('source_title', 'Unknown')}"
+                )
+
+                st.write(
+                    f"**Organization/Author:** "
+                    f"{metadata.get('source_organization', 'Unknown')}"
+                )
+
+                st.write(
+                    f"**Publication year:** "
+                    f"{metadata.get('publication_year', 'Unknown')}"
+                )
+
+                st.write(
+                    f"**Source type:** "
+                    f"{metadata.get('source_type', 'Unknown')}"
+                )
+
+                st.write(
+                    f"**Region:** "
+                    f"{metadata.get('region', 'Unknown')}"
+                )
+
+                st.write(
+                    f"**Evidence type:** "
+                    f"{metadata.get('evidence_type', 'Unknown')}"
+                )
+
+                st.write(
+                    f"**Confidence:** "
+                    f"{metadata.get('confidence', 'Unknown')}"
+                )
