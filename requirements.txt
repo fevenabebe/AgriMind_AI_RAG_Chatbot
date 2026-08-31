@@ -1,5 +1,5 @@
 streamlit
-tensorflow
+tensorflow-cpu
 sentence-transformers
 faiss-cpu
 google-genai
