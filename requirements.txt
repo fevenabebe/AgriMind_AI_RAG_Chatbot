@@ -1,0 +1,8 @@
+streamlit
+tensorflow
+sentence-transformers
+faiss-cpu
+google-genai
+numpy
+pandas
+Pillow
