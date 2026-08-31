@@ -1,5 +1,5 @@
-streamlit
-tensorflow-cpu
+streamlit==1.62.0
+tensorflow==2.20.0
 sentence-transformers
 faiss-cpu
 google-genai
