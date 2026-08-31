@@ -1,9 +1,8 @@
 streamlit==1.62.0
-tensorflow==2.20.0
+tensorflow==2.19.1
 sentence-transformers
 faiss-cpu
 google-genai
 numpy
 pandas
 Pillow
-pyarrow==24.0.0
