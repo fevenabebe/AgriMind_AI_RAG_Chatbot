@@ -324,54 +324,109 @@ Question:
         )
 
 
-        if results:
+        ```python
+if results:
 
-            with st.expander(
-                "📚 Retrieved Agricultural Evidence"
-            ):
+    with st.expander(
+        "📚 Retrieved Agricultural Evidence"
+    ):
 
-                for i, result in enumerate(
-                    results,
-                    start=1
-                ):
+        for i, result in enumerate(
+            results,
+            start=1
+        ):
 
-                    st.markdown(
-                        f"### Evidence {i}"
-                    )
+            metadata = result.get(
+                "document",
+                {}
+            ).get(
+                "metadata",
+                {}
+            )
 
-                    st.write(
-                        f"**Retrieval score:** "
-                        f"{float(result.get('score', 0)):.4f}"
-                    )
+            st.markdown(
+                f"### Evidence {i}"
+            )
 
-                    st.write(
-                        f"**Topic:** "
-                        f"{result.get('topic', 'Unknown')}"
-                    )
+            st.write(
+                f"**Retrieval score:** "
+                f"{float(result.get('score', 0)):.4f}"
+            )
 
-                    st.write(
-                        f"**Source:** "
-                        f"{result.get('source', 'Unknown')}"
-                    )
+            st.write(
+                f"**Crop:** "
+                f"{metadata.get('crop', 'Unknown')}"
+            )
 
-                    st.write(
-                        f"**Organization/Author:** "
-                        f"{result.get('organization', 'Unknown')}"
-                    )
+            st.write(
+                f"**Disease:** "
+                f"{metadata.get('disease', 'Unknown')}"
+            )
 
-                    st.write(
-                        f"**Publication year:** "
-                        f"{result.get('publication_year', 'Unknown')}"
-                    )
+            st.write(
+                f"**Topic:** "
+                f"{metadata.get('topic', 'Unknown')}"
+            )
 
-                    st.write(
-                        result.get(
-                            "information",
-                            ""
-                        )
-                    )
+            st.write(
+                f"**Source:** "
+                f"{metadata.get('source_title', 'Unknown')}"
+            )
 
-                    st.divider()
+            st.write(
+                f"**Organization/Author:** "
+                f"{metadata.get('source_organization', 'Unknown')}"
+            )
+
+            st.write(
+                f"**Publication year:** "
+                f"{metadata.get('publication_year', 'Unknown')}"
+            )
+
+            st.write(
+                f"**Source type:** "
+                f"{metadata.get('source_type', 'Unknown')}"
+            )
+
+            st.write(
+                f"**Region:** "
+                f"{metadata.get('region', 'Unknown')}"
+            )
+
+            st.write(
+                f"**Evidence type:** "
+                f"{metadata.get('evidence_type', 'Unknown')}"
+            )
+
+            st.write(
+                f"**Confidence:** "
+                f"{metadata.get('confidence', 'Unknown')}"
+            )
+
+            st.markdown(
+                "**Information:**"
+            )
+
+            st.write(
+                metadata.get(
+                    "content",
+                    "No information available."
+                )
+            )
+
+            source_url = metadata.get(
+                "source_url"
+            )
+
+            if source_url:
+
+                st.markdown(
+                    f"**Source URL:** [{source_url}]({source_url})"
+                )
+
+            st.divider()
+```
+
 
 else:
 
