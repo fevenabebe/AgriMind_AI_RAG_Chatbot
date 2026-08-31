@@ -6,3 +6,4 @@ google-genai
 numpy
 pandas
 Pillow
+pyarrow==24.0.0
